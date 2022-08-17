@@ -278,40 +278,6 @@ int delete_k(Table* ptable, char* key){
     }
 }
 
-Table_old* indiv_search(Table* ptable, char* key){
-    Table_old* min_table = (Table_old*)calloc(1, sizeof(Table_old));
-    min_table->ks = (KeySpace2*)calloc(1, sizeof(KeySpace2));
-    int i = 0;
-    int num = 0;
-    int key_l = 0;
-    int inf_l = 0;
-    ptable->file = fopen(ptable->fname, "r+b");
-    while(num < ptable->csize2){
-        if(ptable->ks_f2[i].elem_of != -1){
-            fseek(ptable->file, ptable->ks_f2[i].elem_of, SEEK_SET);
-            fread(&key_l, sizeof(int), 1, ptable->file);
-            char* key_f = (char*)calloc(key_l + 1, sizeof(char));
-            fread(key_f, sizeof(char), key_l, ptable->file);
-            if((strcmp(key_f, key) == 0)){
-                min_table->ks[0].busy = 1;
-                fread(&inf_l, sizeof(int), 1, ptable->file);
-                min_table->ks[0].info = (char*)calloc(inf_l + 1, sizeof(char));
-                fread(min_table->ks[0].info, sizeof(char), inf_l, ptable->file);
-                min_table->ks[0].key = (char*)calloc(key_l + 1, sizeof(char));
-                strcpy(min_table->ks[0].key, key_f);
-                min_table->csize2 = 1;
-            }
-            free(key_f);
-            key_f = NULL;
-            num++;
-            key_l = 0;
-            inf_l = 0;
-        }
-        i++;
-    }
-    fclose(ptable->file);
-    return min_table;
-}
 
 void print_table(Table_old* ptable){
     printf("   i    |   key   |   info   \n");

@@ -40,7 +40,6 @@ int insert(char* key, char* inf, Table* ptable);
 void print_table(Table_old* ptable);
 Table_old* search(Table* ptable, char* key);
 int delete_k(Table* ptable, char* key);
-Table_old* indiv_search(Table* ptable, char* key);
 Table_old* free_table(Table_old* ptable);
 void print_from_file(Table* ptable);
 Table* free_ftable(Table* ptable);
