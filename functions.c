@@ -81,14 +81,6 @@ char* check_file_name(char* fname){
             free(fname);
             printf("Вы ничего не ввели. Попробуйте ещё раз.\n");
             fname = readline("");
-        //}else if(strlen(fname) < 5){
-            //free(fname);
-            //printf("Неверно введено имя файла. Попробуйте ещё раз.\n");
-            //fname = readline("");
-        //}else if((fname[strlen(fname) - 1] != 'n') || (fname[strlen(fname) - 2] != 'i') || (fname[strlen(fname) - 3] != 'b') || (fname[strlen(fname) - 4] != '.')){
-            //free(fname);
-            //printf("Неверно введено имя файла. Попробуйте ещё раз.\n");
-            //fname = readline("");
         }else{
             break;
         }
@@ -172,33 +164,12 @@ Table* get_from_file(char* fname){
     return ptable;
 }
 
-int h1(char *str, int size){
-    int hash = 5381;
-    int c = 0;
-    while (c == *str++)
-        hash = ((hash << 5) + hash) + c;
-    hash = hash % size;
-    hash = abs(hash);
-    return hash;
-}
-
-int h2(char* key, int size){
-    int hashSum = 0;
-    for(int i = 0; i < strlen(key); i++){
-        hashSum = hashSum * 29 + key[i];
-    }
-    int prime = size - 1;
-    int index = prime - (hashSum % prime);
-    return index;
-}
 
 int insert(char* key, char* inf, Table* ptable){
     int strt = 1;
     int i = 1;
-    int realise = 0;
     int key_l = 0;
     int inf_l = 0;
-    strt = i = h1(key, ptable->msize2);
     if(ptable->msize2 == ptable->csize2){
         return -2;//переполнение
     }
@@ -210,9 +181,8 @@ int insert(char* key, char* inf, Table* ptable){
         char* key_f = (char*)calloc(key_l + 1, sizeof(char));
         fread(key_f, sizeof(char), key_l, ptable->file);
         if(strcmp(key_f, key) == 0){
-            realise++;
         }
-        i = (strt + j*(h2(key, ptable->msize2))) % ptable->msize2;
+        i++;
         free(key_f);
         key_f = NULL;
         key_l = 0;
@@ -229,7 +199,6 @@ int insert(char* key, char* inf, Table* ptable){
     inf_l = strlen(inf);
     fwrite(&key_l, sizeof(int), 1, ptable->file);
     fwrite(key, sizeof(char), key_l, ptable->file);
-    fwrite(&realise, sizeof(int), 1, ptable->file);
     fwrite(&inf_l, sizeof(int), 1, ptable->file);
     fwrite(inf, sizeof(char), inf_l, ptable->file);
     fclose(ptable->file);
@@ -254,7 +223,7 @@ Table_old* search(Table* ptable, char* key){
             fread(key_f, sizeof(char), key_l, ptable->file);
             if(strcmp(key_f, key) == 0){
                 min_table->ks[i].busy = 1;
-                fread(&(min_table->ks[i].realise), sizeof(int), 1, ptable->file);
+                fread(&key_l, sizeof(int), 1, ptable->file);
                 min_table->ks[i].key = (char*)calloc(key_l + 1, sizeof(char));
                 strcpy(min_table->ks[i].key, key_f);
                 min_table->csize2 = min_table->csize2 + 1;
@@ -309,14 +278,13 @@ int delete_k(Table* ptable, char* key){
     }
 }
 
-Table_old* indiv_search(Table* ptable, char* key, int realise){
+Table_old* indiv_search(Table* ptable, char* key){
     Table_old* min_table = (Table_old*)calloc(1, sizeof(Table_old));
     min_table->ks = (KeySpace2*)calloc(1, sizeof(KeySpace2));
     int i = 0;
     int num = 0;
     int key_l = 0;
     int inf_l = 0;
-    int realise_f = 0;
     ptable->file = fopen(ptable->fname, "r+b");
     while(num < ptable->csize2){
         if(ptable->ks_f2[i].elem_of != -1){
@@ -324,10 +292,8 @@ Table_old* indiv_search(Table* ptable, char* key, int realise){
             fread(&key_l, sizeof(int), 1, ptable->file);
             char* key_f = (char*)calloc(key_l + 1, sizeof(char));
             fread(key_f, sizeof(char), key_l, ptable->file);
-            fread(&realise_f, sizeof(int), 1, ptable->file);
-            if((strcmp(key_f, key) == 0) && (realise_f == realise)){
+            if((strcmp(key_f, key) == 0)){
                 min_table->ks[0].busy = 1;
-                min_table->ks[0].realise = realise;
                 fread(&inf_l, sizeof(int), 1, ptable->file);
                 min_table->ks[0].info = (char*)calloc(inf_l + 1, sizeof(char));
                 fread(min_table->ks[0].info, sizeof(char), inf_l, ptable->file);
@@ -340,7 +306,6 @@ Table_old* indiv_search(Table* ptable, char* key, int realise){
             num++;
             key_l = 0;
             inf_l = 0;
-            realise_f = 0;
         }
         i++;
     }
@@ -354,7 +319,7 @@ void print_table(Table_old* ptable){
     int num = 0;
     while(num < ptable->csize2){
         if(ptable->ks[i].busy > 0){
-            printf(" %d) | %s | %s  , realise %d", i, ptable->ks[i].key, ptable->ks[i].info, ptable->ks[i].realise);
+            printf(" %d) | %s | %s ", i, ptable->ks[i].key, ptable->ks[i].info);
             printf("\n");
             num++;
         }
@@ -385,7 +350,6 @@ void print_from_file(Table* ptable){
     int num = 0;
     int key_l = 0;
     int inf_l = 0;
-    int realise = 0;
     ptable->file = fopen(ptable->fname, "r+b");
     while(num < ptable->csize2){
         if(ptable->ks_f2[i].elem_of != -1){
@@ -393,11 +357,10 @@ void print_from_file(Table* ptable){
             fread(&key_l, sizeof(int), 1, ptable->file);
             char* key = (char*)calloc(key_l + 1, sizeof(char));
             fread(key, sizeof(char), key_l, ptable->file);
-            fread(&realise, sizeof(int), 1, ptable->file);
             fread(&inf_l, sizeof(int), 1, ptable->file);
             char* info = (char*)calloc(inf_l + 1, sizeof(char));
             fread(info, sizeof(char), inf_l, ptable->file);
-            printf(" %d) | %s | %s  , realise %d", i, key, info, realise);
+            printf(" %d) | %s | %s ", i, key, info);
             printf("\n");
             num++;
             free(key);
@@ -406,7 +369,6 @@ void print_from_file(Table* ptable){
             info = NULL;
             key_l = 0;
             inf_l = 0;
-            realise = 0;
         }
         i++;
     }

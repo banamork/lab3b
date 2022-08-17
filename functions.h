@@ -4,7 +4,6 @@
 typedef struct KeySpace2{
     int busy;
     char* key;
-    int realise;
     char* info;
 } KeySpace2;
 
@@ -36,14 +35,12 @@ char* check_choice(char* choice);
 Table* make_table(int size, char* fname);
 Table* get_from_file(char* fname);
 
-int h1(char *str, int size);
-int h2(char* key, int size);
 
 int insert(char* key, char* inf, Table* ptable);
 void print_table(Table_old* ptable);
 Table_old* search(Table* ptable, char* key);
 int delete_k(Table* ptable, char* key);
-Table_old* indiv_search(Table* ptable, char* key, int realise);
+Table_old* indiv_search(Table* ptable, char* key);
 Table_old* free_table(Table_old* ptable);
 void print_from_file(Table* ptable);
 Table* free_ftable(Table* ptable);
