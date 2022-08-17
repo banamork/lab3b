@@ -1,0 +1,6 @@
+make: Entering directory `/Users/vtornik/CLabs/То что спиздил/lab2sem/3b'
+cc -c lab3.c -std=c99 -lreadline -g
+cc -c functions.c -std=c99 -lreadline -g
+cc lab3.o functions.o -std=c99 -lreadline -g -o lab3
+make: Leaving directory `/Users/vtornik/CLabs/То что спиздил/lab2sem/3b'
+ 
