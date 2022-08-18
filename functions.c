@@ -5,7 +5,7 @@
 #include <readline/readline.h>
 #include <ctype.h>
 #include "functions.h"
-void printMenu(){
+void showMenu(){
     printf("\n ..................................................................... \n");
     printf("Выберите действие: \n");
     printf("0 - Выйти из программы.\n");
@@ -16,7 +16,7 @@ void printMenu(){
     printf("\n ..................................................................... \n");
 }
 
-int check(char* menu){
+int verify(char* menu){
     while(1){
         if(menu == NULL){
             printf("Вы ничего не ввели. Попробуйте ещё раз.\n");
@@ -43,7 +43,7 @@ int check(char* menu){
     }
 }
 
-int check_if_you_an_idiot(char* size){
+int if_stupid(char* size){
     while(1){
         if(size == NULL){
             printf("Вы ничего не ввели. Попробуйте ещё раз.\n");
@@ -72,7 +72,7 @@ int check_if_you_an_idiot(char* size){
     }
 }
 
-char* check_file_name(char* fname){
+char* verify_name_of_file(char* fname){
     while(1){
         if(fname == NULL){
             printf("Вы ничего не ввели. Попробуйте ещё раз.\n");
@@ -88,7 +88,7 @@ char* check_file_name(char* fname){
     return fname;
 }
 
-char* check_choice(char* choice){
+char* verify_selected(char* choice){
     while(1){
         if(choice == NULL){
             printf("Вы ничего не ввели. Попробуйте ещё раз.\n");
@@ -108,7 +108,7 @@ char* check_choice(char* choice){
     return choice;
 }
 
-Table* make_table(int size, char* fname){
+Table* create_table(int size, char* fname){
     Table* ptable = (Table*)calloc(1, sizeof(Table));
     ptable->ks_f2 = (KeySpace2_f*)calloc(size, sizeof(KeySpace2_f));
     for(int i = 0; i < size; i++){
@@ -129,7 +129,7 @@ Table* make_table(int size, char* fname){
     return ptable;
 }
 
-Table* get_from_file(char* fname){
+Table* get_smth_from_file(char* fname){
     Table* ptable = (Table*)calloc(1, sizeof(Table));
     ptable->fname = (char*)calloc(strlen(fname) + 1, sizeof(char));
     strcpy(ptable->fname, fname);
@@ -165,7 +165,7 @@ Table* get_from_file(char* fname){
 }
 
 
-int insert(char* key, char* inf, Table* ptable){
+int push(char* key, char* inf, Table* ptable){
     int strt = 1;
     int i = 1;
     int key_l = 0;
@@ -206,7 +206,7 @@ int insert(char* key, char* inf, Table* ptable){
     return 0;
 }
 
-Table_old* search(Table* ptable, char* key){
+Table_old* find(Table* ptable, char* key){
     Table_old* min_table = (Table_old*)calloc(1, sizeof(Table_old));
     min_table->ks = (KeySpace2*)calloc(ptable->msize2, sizeof(KeySpace2));
     int i = 0;
@@ -248,7 +248,7 @@ Table_old* search(Table* ptable, char* key){
 }
 
 
-int delete_k(Table* ptable, char* key){
+int remove_key(Table* ptable, char* key){
     int i = 0;
     int num = 0;
     int f = 0;
@@ -284,7 +284,7 @@ int delete_k(Table* ptable, char* key){
 }
 
 
-void print_table(Table_old* ptable){
+void show_oldtable(Table_old* ptable){
     printf("   i    |   key   |   info   \n");
     int i = 0;
     int num = 0;
@@ -298,7 +298,7 @@ void print_table(Table_old* ptable){
     }
 }
 
-Table_old* free_table(Table_old* ptable){
+Table_old* clean_oldtable(Table_old* ptable){
     int i = 0;
     int num = 0;
     while(num < ptable->csize2){
@@ -315,7 +315,7 @@ Table_old* free_table(Table_old* ptable){
     return ptable;
 }
 
-void print_from_file(Table* ptable){
+void show_smth_from_file(Table* ptable){
     printf("   i    |   key   |   info   \n");
     int i = 0;
     int num = 0;
@@ -346,7 +346,7 @@ void print_from_file(Table* ptable){
     fclose(ptable->file);
 }
 
-Table* free_ftable(Table* ptable){
+Table* clean_table(Table* ptable){
     int i = 0;
     int num = 0;
     while(num < ptable->csize2){

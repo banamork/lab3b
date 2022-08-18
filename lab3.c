@@ -9,29 +9,29 @@ int main(){
     printf("1 - Создать новый файл\n");
     printf("2 - Ввести таблицу из уже существующего\n");
     char* choice = readline("");
-    choice = check_choice(choice);
+    choice = verify_selected(choice);
     printf("Введите имя файла: \n");
     fname = readline("");
-    fname = check_file_name(fname);
+    fname = verify_name_of_file(fname);
     if(choice[0] == '1'){
         printf("Введите размер таблицы: \n");
         char* s = readline("");
-        int size = check_if_you_an_idiot(s);
-        ptable = make_table(size, fname);
+        int size = if_stupid(s);
+        ptable = create_table(size, fname);
     }else{
-        ptable = get_from_file(fname);
+        ptable = get_smth_from_file(fname);
     }
     free(choice);
 
     while(w){
-        printMenu();
+        showMenu();
         char* menu = readline("");
-        int m = check(menu);
+        int m = verify(menu);
         switch(m){
             case 0:
                 w = 0;
                 if(ptable != NULL){
-                    ptable = free_ftable(ptable);
+                    ptable = clean_table(ptable);
                 }
                 break;
             case 1:
@@ -39,17 +39,17 @@ int main(){
                     printf("1 - Создать новый файл\n");
                     printf("2 - Ввести таблицу из уже существующего\n");
                     char* choice = readline("");
-                    choice = check_choice(choice);
+                    choice = verify_selected(choice);
                     printf("Введите имя файла: \n");
                     fname = readline("");
-                    fname = check_file_name(fname);
+                    fname = verify_name_of_file(fname);
                     if(choice[0] == '1'){
                         printf("Введите размер тaблицы: \n");
                         char* s = readline("");
-                        int size = check_if_you_an_idiot(s);
-                        ptable = make_table(size, fname);
+                        int size = if_stupid(s);
+                        ptable = create_table(size, fname);
                     }else{
-                        ptable = get_from_file(fname);
+                        ptable = get_smth_from_file(fname);
                     }
                     free(choice);
                 }
@@ -60,7 +60,7 @@ int main(){
                 if(ptable == NULL){
                     printf("Таблица не создана.\n");
                 }else{
-                    int f = insert(key, inf, ptable);
+                    int f = push(key, inf, ptable);
                     if(f == -2){
                         printf("Таблица переполнена.\n");
                     }
@@ -75,14 +75,14 @@ int main(){
                 }
                 printf("Введите ключ для поиска\n");
                 key = readline("");
-                Table_old* min_table = search(ptable, key);
+                Table_old* min_table = find(ptable, key);
                 if(min_table->csize2 > 0){
-                    print_table(min_table);
+                    show_oldtable(min_table);
                 }else{
                     printf("Элемент не найден.\n");
                 }
                 free(key);
-                min_table = free_table(min_table);
+                min_table = clean_oldtable(min_table);
                 break;
             case 3:
                 if(ptable == NULL){
@@ -91,7 +91,7 @@ int main(){
                 }
                 printf("Введите ключ для удаления\n");
                 key = readline("");
-                int f = delete_k(ptable, key);
+                int f = remove_key(ptable, key);
                 if(f){
                     printf("Элемент в таблице не найден\n");
                 }
@@ -102,7 +102,7 @@ int main(){
                     printf("Введите таблицу.\n");
                     break;
                 }else{
-                    print_from_file(ptable);
+                    show_smth_from_file(ptable);
                 }
                 break;
             default:

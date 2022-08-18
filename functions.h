@@ -25,23 +25,23 @@ typedef struct Table_old{
     KeySpace2* ks;
 } Table_old;
 
-void printMenu();
+void showMenu();
 
-int check(char* menu);
-int check_if_you_an_idiot(char* size);
-char* check_file_name(char* fname);
-char* check_choice(char* choice);
+int verify(char* menu);
+int if_stupid(char* size);
+char* verify_name_of_file(char* fname);
+char* verify_selected(char* choice);
 
-Table* make_table(int size, char* fname);
-Table* get_from_file(char* fname);
+Table* create_table(int size, char* fname);
+Table* get_smth_from_file(char* fname);
 
 
-int insert(char* key, char* inf, Table* ptable);
-void print_table(Table_old* ptable);
-Table_old* search(Table* ptable, char* key);
-int delete_k(Table* ptable, char* key);
-Table_old* free_table(Table_old* ptable);
-void print_from_file(Table* ptable);
-Table* free_ftable(Table* ptable);
+int push(char* key, char* inf, Table* ptable);
+void show_oldtable(Table_old* ptable);
+Table_old* find(Table* ptable, char* key);
+int remove_key(Table* ptable, char* key);
+Table_old* clean_oldtable(Table_old* ptable);
+void show_smth_from_file(Table* ptable);
+Table* clean_table(Table* ptable);
 
 #endif //__FUNCTIONS_H__
