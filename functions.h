@@ -1,47 +1,47 @@
-#ifndef __FUNCTIONS_H__
-#define __FUNCTIONS_H__
+#ifndef __FUNCT__
+#define __FUNCT__
 #include <stdio.h>
-typedef struct KeySpace2{
+typedef struct KeySpace2_l{
     int busy;
     char* key;
     char* info;
-} KeySpace2;
+} KeySpace2_l;
 
 typedef struct KeySpace2_f{
-    int elem_of;
+    int element_f;
 } KeySpace2_f;
 
 typedef struct Table{
-    int msize2;
-    int csize2;
-    char* fname;
+    int size2a;
+    int size2b;
+    char* filename;
     FILE* file;
-    KeySpace2_f* ks_f2;
+    KeySpace2_f* ks_f;
 } Table;
 
-typedef struct Table_old{
-    int msize2;
-    int csize2;
-    KeySpace2* ks;
-} Table_old;
+typedef struct old_Table{
+    int old_size2a;
+    int old_size2b;
+    KeySpace2_l* ks_l;
+} old_Table;
 
 void showMenu();
 
 int verify(char* menu);
 int if_stupid(char* size);
-char* verify_name_of_file(char* fname);
-char* verify_selected(char* choice);
+char* verify_name_of_file(char* filename);
+char* verify_selected(char* selected);
 
-Table* create_table(int size, char* fname);
-Table* get_smth_from_file(char* fname);
+Table* create_table(int size, char* filename);
+Table* get_smth_from_file(char* filename);
 
 
-int push(char* key, char* inf, Table* ptable);
-void show_oldtable(Table_old* ptable);
-Table_old* find(Table* ptable, char* key);
-int remove_key(Table* ptable, char* key);
-Table_old* clean_oldtable(Table_old* ptable);
-void show_smth_from_file(Table* ptable);
-Table* clean_table(Table* ptable);
+int push(char* key, char* info, Table* newtable);
+void show_oldtable(old_Table* newtable);
+old_Table* find(Table* newtable, char* key);
+int remove_key(Table* newtable, char* key);
+old_Table* clean_oldtable(old_Table* newtable);
+void show_smth_from_file(Table* newtable);
+Table* clean_table(Table* newtable);
 
-#endif //__FUNCTIONS_H__
+#endif //__FUNCT__

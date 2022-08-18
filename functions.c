@@ -9,34 +9,34 @@ void showMenu(){
     printf("\n ..................................................................... \n");
     printf("Выберите действие: \n");
     printf("0 - Выйти из программы.\n");
-    printf("1 - Вставить элемент в таблицу\n");
-    printf("2 - Поиск в таблице элемента, заданного составным ключом\n");
-    printf("3 - Удаление из таблицы элемента, заданного составным ключом\n");
-    printf("4 - Вывод содержимого таблицы на экран\n");
+    printf("1 - Вставить элемент в таблицу.\n");
+    printf("2 - Поиск в таблице элемента по ключу.\n");
+    printf("3 - Удаление из таблицы элемента по ключу.\n");
+    printf("4 - Вывод содержимого таблицы.\n");
     printf("\n ..................................................................... \n");
 }
 
 int verify(char* menu){
     while(1){
         if(menu == NULL){
-            printf("Вы ничего не ввели. Попробуйте ещё раз.\n");
+            printf("Вы ничего не ввели.\n");
             menu = readline("");
         }else if(strlen(menu) == 0){
-            printf("Вы ничего не ввели. Попробуйте ещё раз.\n");
+            printf("Вы ничего не ввели.\n");
             free(menu);
             menu = readline("");
         }else if(strlen(menu) == 1){
             if(isdigit(menu[0])){
-                int m = atoi(menu);
+                int k = atoi(menu);
                 free(menu);
-                return m;
+                return k;
             }else{
-                printf("Неверно введён пункт меню. Попробуйте ещё раз.\n");
+                printf("Неверно введён пункт меню.\n");
                 free(menu);
                 menu = readline("");
             }
         }else{
-            printf("Неверно введён пункт меню. Попробуйте ещё раз.\n");
+            printf("Неверно введён пункт меню.\n");
             free(menu);
             menu = readline("");
         }
@@ -46,10 +46,10 @@ int verify(char* menu){
 int if_stupid(char* size){
     while(1){
         if(size == NULL){
-            printf("Вы ничего не ввели. Попробуйте ещё раз.\n");
+            printf("Вы ничего не ввели.\n");
             size = readline("");
         }else if(strlen(size) == 0){
-            printf("Вы ничего не ввели. Попробуйте ещё раз.\n");
+            printf("Вы ничего не ввели.\n");
             size = readline("");
         }else{
             int l = strlen(size);
@@ -64,7 +64,7 @@ int if_stupid(char* size){
                 free(size);
                 return s;
             }else{
-                printf("Невено введён размер. Попробуйте ещё раз.\n");
+                printf("Неверно введён размер.\n");
                 free(size);
                 size = readline("");
             }
@@ -72,114 +72,114 @@ int if_stupid(char* size){
     }
 }
 
-char* verify_name_of_file(char* fname){
+char* verify_name_of_file(char* filename){
     while(1){
-        if(fname == NULL){
-            printf("Вы ничего не ввели. Попробуйте ещё раз.\n");
-            fname = readline("");
-        }else if(strlen(fname) == 0){
-            free(fname);
-            printf("Вы ничего не ввели. Попробуйте ещё раз.\n");
-            fname = readline("");
+        if(filename == NULL){
+            printf("Вы ничего не ввели.\n");
+            filename = readline("");
+        }else if(strlen(filename) == 0){
+            free(filename);
+            printf("Вы ничего не ввели.\n");
+            filename = readline("");
         }else{
             break;
         }
     }
-    return fname;
+    return filename;
 }
 
-char* verify_selected(char* choice){
+char* verify_selected(char* selected){
     while(1){
-        if(choice == NULL){
-            printf("Вы ничего не ввели. Попробуйте ещё раз.\n");
-            choice = readline("");
-        }else if(strlen(choice) == 0){
-            printf("Вы ничего не ввели. Попробуйте ещё раз.\n");
-            free(choice);
-            choice = readline("");
-        }else if(((choice[0] == '1') || (choice[0] == '2')) && (strlen(choice) == 1)){
+        if(selected == NULL){
+            printf("Вы ничего не ввели.\n");
+            selected = readline("");
+        }else if(strlen(selected) == 0){
+            printf("Вы ничего не ввели.\n");
+            free(selected);
+            selected = readline("");
+        }else if(((selected[0] == '1') || (selected[0] == '2')) && (strlen(selected) == 1)){
             break;
         }else{
-            printf("Неверно введён пункт меню. Попробуйте ещё раз.\n");
-            free(choice);
-            choice = readline("");
+            printf("Неверно введён пункт меню.\n");
+            free(selected);
+            selected = readline("");
         }
     }
-    return choice;
+    return selected;
 }
 
-Table* create_table(int size, char* fname){
-    Table* ptable = (Table*)calloc(1, sizeof(Table));
-    ptable->ks_f2 = (KeySpace2_f*)calloc(size, sizeof(KeySpace2_f));
+Table* create_table(int size, char* filename){
+    Table* newtable = (Table*)calloc(1, sizeof(Table));
+    newtable->ks_f = (KeySpace2_f*)calloc(size, sizeof(KeySpace2_f));
     for(int i = 0; i < size; i++){
-        ptable->ks_f2[i].elem_of = -1;
+        newtable->ks_f[i].element_f = -1;
     }
-    ptable->csize2 = 0;
-    ptable->msize2 = size;
-    ptable->fname = (char*)calloc(strlen(fname) + 1, sizeof(char));
-    strcpy(ptable->fname, fname);
-    ptable->file = fopen(fname, "w+b");
-    fseek(ptable->file, 0, SEEK_SET);
-    fwrite(&(ptable->msize2), sizeof(int), 1, ptable->file);
+    newtable->size2b = 0;
+    newtable->size2a = size;
+    newtable->filename = (char*)calloc(strlen(filename) + 1, sizeof(char));
+    strcpy(newtable->filename, filename);
+    newtable->file = fopen(filename, "w+b");
+    fseek(newtable->file, 0, SEEK_SET);
+    fwrite(&(newtable->size2a), sizeof(int), 1, newtable->file);
     for(int i = 0; i < size; i++){
-        fwrite(&(ptable->ks_f2[i].elem_of), sizeof(int), 1, ptable->file);
+        fwrite(&(newtable->ks_f[i].element_f), sizeof(int), 1, newtable->file);
     }
-    fclose(ptable->file);
-    free(fname);
-    return ptable;
+    fclose(newtable->file);
+    free(filename);
+    return newtable;
 }
 
-Table* get_smth_from_file(char* fname){
-    Table* ptable = (Table*)calloc(1, sizeof(Table));
-    ptable->fname = (char*)calloc(strlen(fname) + 1, sizeof(char));
-    strcpy(ptable->fname, fname);
-    ptable->file = fopen(fname, "r+b");
-    ptable->csize2 = 0;
-    if(ptable->file == NULL){
-        free(ptable->fname);
-        free(ptable);
-        free(fname);
-        ptable = NULL;
-        return ptable;
+Table* get_smth_from_file(char* filename){
+    Table* newtable = (Table*)calloc(1, sizeof(Table));
+    newtable->filename = (char*)calloc(strlen(filename) + 1, sizeof(char));
+    strcpy(newtable->filename, filename);
+    newtable->file = fopen(filename, "r+b");
+    newtable->size2b = 0;
+    if(newtable->file == NULL){
+        free(newtable->filename);
+        free(newtable);
+        free(filename);
+        newtable = NULL;
+        return newtable;
     }
-    fseek(ptable->file, 0, SEEK_SET);
-    ptable->msize2 = 0;
+    fseek(newtable->file, 0, SEEK_SET);
+    newtable->size2a = 0;
     int n = 0;
-    fread(&n, sizeof(int), 1, ptable->file);
-    ptable->msize2 = n;
+    fread(&n, sizeof(int), 1, newtable->file);
+    newtable->size2a = n;
     if(n == 0){
-        free(ptable);
-        free(fname);
-        ptable = NULL;
-        return ptable;
+        free(newtable);
+        free(filename);
+        newtable = NULL;
+        return newtable;
     }
-    ptable->ks_f2 = (KeySpace2_f*)calloc(ptable->msize2, sizeof(KeySpace2_f));
-    for(int i = 0; i < ptable->msize2; i++){
-        fread(&(ptable->ks_f2[i].elem_of), sizeof(int), 1, ptable->file);
-        if(ptable->ks_f2[i].elem_of != -1){
-            ptable->csize2 = ptable->csize2 + 1;
+    newtable->ks_f = (KeySpace2_f*)calloc(newtable->size2a, sizeof(KeySpace2_f));
+    for(int i = 0; i < newtable->size2a; i++){
+        fread(&(newtable->ks_f[i].element_f), sizeof(int), 1, newtable->file);
+        if(newtable->ks_f[i].element_f != -1){
+            newtable->size2b = newtable->size2b + 1;
         }
     }
-    free(fname);
-    return ptable;
+    free(filename);
+    return newtable;
 }
 
 
-int push(char* key, char* inf, Table* ptable){
+int push(char* key, char* info, Table* newtable){
     int strt = 1;
     int i = 1;
     int key_l = 0;
-    int inf_l = 0;
-    if(ptable->msize2 == ptable->csize2){
-        return -2;//переполнение
+    int info_l = 0;
+    if(newtable->size2a == newtable->size2b){   //underflow
+        return -2;
     }
     int j = 1;
-    ptable->file = fopen(ptable->fname, "r+b");
-    while((ptable->ks_f2[i].elem_of != -1) && (j < ptable->msize2)){
-        fseek(ptable->file, ptable->ks_f2[i].elem_of, SEEK_SET);
-        fread(&key_l, sizeof(int), 1, ptable->file);
+    newtable->file = fopen(newtable->filename, "r+b");
+    while((newtable->ks_f[i].element_f != -1) && (j < newtable->size2a)){
+        fseek(newtable->file, newtable->ks_f[i].element_f, SEEK_SET);
+        fread(&key_l, sizeof(int), 1, newtable->file);
         char* key_f = (char*)calloc(key_l + 1, sizeof(char));
-        fread(key_f, sizeof(char), key_l, ptable->file);
+        fread(key_f, sizeof(char), key_l, newtable->file);
         if(strcmp(key_f, key) == 0){
         }
         i++;
@@ -188,85 +188,85 @@ int push(char* key, char* inf, Table* ptable){
         key_l = 0;
         j++;
     }
-    fclose(ptable->file);
-    ptable->file = fopen(ptable->fname, "r+b");
-    fseek(ptable->file, 0, SEEK_END);
-    ptable->ks_f2[i].elem_of = ftell(ptable->file);
-    fseek(ptable->file, 4 + i*(sizeof(int)), SEEK_SET);
-    fwrite(&(ptable->ks_f2[i].elem_of), sizeof(int), 1, ptable->file);
-    fseek(ptable->file, 0, SEEK_END);
+    fclose(newtable->file);
+    newtable->file = fopen(newtable->filename, "r+b");
+    fseek(newtable->file, 0, SEEK_END);
+    newtable->ks_f[i].element_f = ftell(newtable->file);
+    fseek(newtable->file, 4 + i*(sizeof(int)), SEEK_SET);
+    fwrite(&(newtable->ks_f[i].element_f), sizeof(int), 1, newtable->file);
+    fseek(newtable->file, 0, SEEK_END);
     key_l = strlen(key);
-    inf_l = strlen(inf);
-    fwrite(&key_l, sizeof(int), 1, ptable->file);
-    fwrite(key, sizeof(char), key_l, ptable->file);
-    fwrite(&inf_l, sizeof(int), 1, ptable->file);
-    fwrite(inf, sizeof(char), inf_l, ptable->file);
-    fclose(ptable->file);
-    ptable->csize2 = ptable->csize2 + 1;
+    info_l = strlen(info);
+    fwrite(&key_l, sizeof(int), 1, newtable->file);
+    fwrite(key, sizeof(char), key_l, newtable->file);
+    fwrite(&info_l, sizeof(int), 1, newtable->file);
+    fwrite(info, sizeof(char), info_l, newtable->file);
+    fclose(newtable->file);
+    newtable->size2b = newtable->size2b + 1;
     return 0;
 }
 
-Table_old* find(Table* ptable, char* key){
-    Table_old* min_table = (Table_old*)calloc(1, sizeof(Table_old));
-    min_table->ks = (KeySpace2*)calloc(ptable->msize2, sizeof(KeySpace2));
+old_Table* find(Table* newtable, char* key){
+    old_Table* min_table = (old_Table*)calloc(1, sizeof(old_Table));
+    min_table->ks_l = (KeySpace2_l*)calloc(newtable->size2a, sizeof(KeySpace2_l));
     int i = 0;
     int num = 0;
     int key_l = 0;
-    int inf_l = 0;
-    min_table->msize2 = ptable->msize2;
-    ptable->file = fopen(ptable->fname, "r+b");
-    while(num < ptable->csize2){
-        if(ptable->ks_f2[i].elem_of != -1){
-            fseek(ptable->file,ptable->ks_f2[i].elem_of, SEEK_SET);
-            fread(&key_l, sizeof(int), 1, ptable->file);
+    int info_l = 0;
+    min_table->old_size2a = newtable->size2a;
+    newtable->file = fopen(newtable->filename, "r+b");
+    while(num < newtable->size2b){
+        if(newtable->ks_f[i].element_f != -1){
+            fseek(newtable->file,newtable->ks_f[i].element_f, SEEK_SET);
+            fread(&key_l, sizeof(int), 1, newtable->file);
             char* key_f = (char*)calloc(key_l + 1, sizeof(char));
-            fread(key_f, sizeof(char), key_l, ptable->file);
-            fread(&inf_l, sizeof(int), 1, ptable->file);
-            char* inf_f = (char*)calloc(inf_l + 1, sizeof(char));
-            fread(inf_f, sizeof(char), inf_l, ptable->file);
+            fread(key_f, sizeof(char), key_l, newtable->file);
+            fread(&info_l, sizeof(int), 1, newtable->file);
+            char* info_f = (char*)calloc(info_l + 1, sizeof(char));
+            fread(info_f, sizeof(char), info_l, newtable->file);
             if(strcmp(key_f, key) == 0){
-                min_table->ks[i].busy = 1;
-                fread(&key_l, sizeof(int), 1, ptable->file);
-                min_table->ks[i].key = (char*)calloc(key_l + 1, sizeof(char));
-                strcpy(min_table->ks[i].key, key_f);
-                min_table->csize2 = min_table->csize2 + 1;
-                fread(&inf_l, sizeof(int), 1, ptable->file);
-                min_table->ks[i].info = (char*)calloc(inf_l + 1, sizeof(char));
-                fread(min_table->ks[i].info, sizeof(char), inf_l, ptable->file);
-                strcpy(min_table->ks[i].info, inf_f);
+                min_table->ks_l[i].busy = 1;
+                fread(&key_l, sizeof(int), 1, newtable->file);
+                min_table->ks_l[i].key = (char*)calloc(key_l + 1, sizeof(char));
+                strcpy(min_table->ks_l[i].key, key_f);
+                min_table->old_size2b = min_table->old_size2b + 1;
+                fread(&info_l, sizeof(int), 1, newtable->file);
+                min_table->ks_l[i].info = (char*)calloc(info_l + 1, sizeof(char));
+                fread(min_table->ks_l[i].info, sizeof(char), info_l, newtable->file);
+                strcpy(min_table->ks_l[i].info, info_f);
             }
             num++;
             free(key_f);
-            free(inf_f);
+            free(info_f);
         }
         i++;
         key_l = 0;
-        inf_l = 0;
+        info_l = 0;
     }
-    fclose(ptable->file);
+    fclose(newtable->file);
     return min_table;
 }
 
 
-int remove_key(Table* ptable, char* key){
+int remove_key(Table* newtable, char* key){
     int i = 0;
     int num = 0;
-    int f = 0;
-    int k = 0;
+    int d = 0;
+    int j = 0;
     int key_l = 0;
-    ptable->file = fopen(ptable->fname, "r+b");
-    while(num < ptable->csize2){
-        if(ptable->ks_f2[i].elem_of != -1){
-            fseek(ptable->file, ptable->ks_f2[i].elem_of, SEEK_SET);
-            fread(&key_l, sizeof(int), 1, ptable->file);
+    newtable->file = fopen(newtable->filename, "r+b");
+    while(num < newtable->size2b){
+        if(newtable->ks_f[i].element_f != -1){
+            fseek(newtable->file, newtable->ks_f[i].element_f, SEEK_SET);
+            fread(&key_l, sizeof(int), 1, newtable->file);
             char* key_f = (char*)calloc(key_l + 1, sizeof(char));
-            fread(key_f, sizeof(char), key_l, ptable->file);
+            fread(key_f, sizeof(char), key_l, newtable->file);
             if(strcmp(key_f, key) == 0){
-                ptable->ks_f2[i].elem_of = -1;
-                fseek(ptable->file, 4 + i*(sizeof(int)), SEEK_SET);
-                fwrite(&(ptable->ks_f2[i].elem_of), sizeof(int), 1, ptable->file);
-                k++;
-                f = 1;
+                newtable->ks_f[i].element_f = -1;
+                fseek(newtable->file, 4 + i*(sizeof(int)), SEEK_SET);
+                fwrite(&(newtable->ks_f[i].element_f), sizeof(int), 1, newtable->file);
+                j++;
+                d = 1;
             }
             free(key_f);
             num++;
@@ -274,9 +274,9 @@ int remove_key(Table* ptable, char* key){
         i++;
         key_l = 0;
     }
-    ptable->csize2 = ptable->csize2 - k;
-    fclose(ptable->file);
-    if(f){
+    newtable->size2b = newtable->size2b - j;
+    fclose(newtable->file);
+    if(d){
         return 0;
     }else{
         return -1;
@@ -284,13 +284,13 @@ int remove_key(Table* ptable, char* key){
 }
 
 
-void show_oldtable(Table_old* ptable){
+void show_oldtable(old_Table* newtable){
     printf("   i    |   key   |   info   \n");
     int i = 0;
     int num = 0;
-    while(num < ptable->csize2){
-        if(ptable->ks[i].busy > 0){
-            printf(" %d) | %s | %s ", i, ptable->ks[i].key, ptable->ks[i].info);
+    while(num < newtable->old_size2b){
+        if(newtable->ks_l[i].busy > 0){
+            printf(" %d) | %s | %s ", i, newtable->ks_l[i].key, newtable->ks_l[i].info);
             printf("\n");
             num++;
         }
@@ -298,39 +298,39 @@ void show_oldtable(Table_old* ptable){
     }
 }
 
-Table_old* clean_oldtable(Table_old* ptable){
+old_Table* clean_oldtable(old_Table* newtable){
     int i = 0;
     int num = 0;
-    while(num < ptable->csize2){
-        if(ptable->ks[i].busy > 0){
-            free(ptable->ks[i].info);
-            free(ptable->ks[i].key);
+    while(num < newtable->old_size2b){
+        if(newtable->ks_l[i].busy > 0){
+            free(newtable->ks_l[i].info);
+            free(newtable->ks_l[i].key);
             num++;
         }
         i++;
     }
-    free(ptable->ks);
-    free(ptable);
-    ptable = NULL;
-    return ptable;
+    free(newtable->ks_l);
+    free(newtable);
+    newtable = NULL;
+    return newtable;
 }
 
-void show_smth_from_file(Table* ptable){
+void show_smth_from_file(Table* newtable){
     printf("   i    |   key   |   info   \n");
     int i = 0;
     int num = 0;
     int key_l = 0;
-    int inf_l = 0;
-    ptable->file = fopen(ptable->fname, "r+b");
-    while(num < ptable->csize2){
-        if(ptable->ks_f2[i].elem_of != -1){
-            fseek(ptable->file, ptable->ks_f2[i].elem_of, SEEK_SET);
-            fread(&key_l, sizeof(int), 1, ptable->file);
+    int info_l = 0;
+    newtable->file = fopen(newtable->filename, "r+b");
+    while(num < newtable->size2b){
+        if(newtable->ks_f[i].element_f != -1){
+            fseek(newtable->file, newtable->ks_f[i].element_f, SEEK_SET);
+            fread(&key_l, sizeof(int), 1, newtable->file);
             char* key = (char*)calloc(key_l + 1, sizeof(char));
-            fread(key, sizeof(char), key_l, ptable->file);
-            fread(&inf_l, sizeof(int), 1, ptable->file);
-            char* info = (char*)calloc(inf_l + 1, sizeof(char));
-            fread(info, sizeof(char), inf_l, ptable->file);
+            fread(key, sizeof(char), key_l, newtable->file);
+            fread(&info_l, sizeof(int), 1, newtable->file);
+            char* info = (char*)calloc(info_l + 1, sizeof(char));
+            fread(info, sizeof(char), info_l, newtable->file);
             printf(" %d) | %s | %s ", i, key, info);
             printf("\n");
             num++;
@@ -339,26 +339,26 @@ void show_smth_from_file(Table* ptable){
             free(info);
             info = NULL;
             key_l = 0;
-            inf_l = 0;
+            info_l = 0;
         }
         i++;
     }
-    fclose(ptable->file);
+    fclose(newtable->file);
 }
 
-Table* clean_table(Table* ptable){
+Table* clean_table(Table* newtable){
     int i = 0;
     int num = 0;
-    while(num < ptable->csize2){
-        if(ptable->ks_f2[i].elem_of != -1){
-            ptable->ks_f2[i].elem_of = -1;
+    while(num < newtable->size2b){
+        if(newtable->ks_f[i].element_f != -1){
+            newtable->ks_f[i].element_f = -1;
             num++;
         }
         i++;
     }
-    free(ptable->ks_f2);
-    free(ptable->fname);
-    free(ptable);
-    ptable = NULL;
-    return ptable;
+    free(newtable->ks_f);
+    free(newtable->filename);
+    free(newtable);
+    newtable = NULL;
+    return newtable;
 }

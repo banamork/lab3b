@@ -3,80 +3,80 @@
 #include <readline/readline.h>
 #include "functions.h"
 int main(){
-        int w = 1;
-    Table* ptable = NULL;
-    char* fname = NULL;
-    printf("1 - Создать новый файл\n");
-    printf("2 - Ввести таблицу из уже существующего\n");
-    char* choice = readline("");
-    choice = verify_selected(choice);
-    printf("Введите имя файла: \n");
-    fname = readline("");
-    fname = verify_name_of_file(fname);
-    if(choice[0] == '1'){
-        printf("Введите размер таблицы: \n");
+        int n = 1;
+    Table* newtable = NULL;
+    char* filename = NULL;
+    printf("1 - Новый файл.\n");
+    printf("2 - Ввести таблицу из существующего.\n");
+    char* selected = readline("");
+    selected = verify_selected(selected);
+    printf("Имя файла: \n");
+    filename = readline("");
+    filename = verify_name_of_file(filename);
+    if(selected[0] == '1'){
+        printf("Размер таблицы: \n");
         char* s = readline("");
         int size = if_stupid(s);
-        ptable = create_table(size, fname);
+        newtable = create_table(size, filename);
     }else{
-        ptable = get_smth_from_file(fname);
+        newtable = get_smth_from_file(filename);
     }
-    free(choice);
+    free(selected);
 
-    while(w){
+    while(n){
         showMenu();
         char* menu = readline("");
-        int m = verify(menu);
-        switch(m){
+        int k = verify(menu);
+        switch(k){
             case 0:
-                w = 0;
-                if(ptable != NULL){
-                    ptable = clean_table(ptable);
+                n = 0;
+                if(newtable != NULL){
+                    newtable = clean_table(newtable);
                 }
                 break;
             case 1:
-                if(ptable == NULL){
-                    printf("1 - Создать новый файл\n");
-                    printf("2 - Ввести таблицу из уже существующего\n");
-                    char* choice = readline("");
-                    choice = verify_selected(choice);
-                    printf("Введите имя файла: \n");
-                    fname = readline("");
-                    fname = verify_name_of_file(fname);
-                    if(choice[0] == '1'){
-                        printf("Введите размер тaблицы: \n");
+                if(newtable == NULL){
+                    printf("1 - Новый файл.\n");
+                    printf("2 - Ввести таблицу из существующего.\n");
+                    char* selected = readline("");
+                    selected = verify_selected(selected);
+                    printf("Имя файла: \n");
+                    filename = readline("");
+                    filename = verify_name_of_file(filename);
+                    if(selected[0] == '1'){
+                        printf("Размер тaблицы: \n");
                         char* s = readline("");
                         int size = if_stupid(s);
-                        ptable = create_table(size, fname);
+                        newtable = create_table(size, filename);
                     }else{
-                        ptable = get_smth_from_file(fname);
+                        newtable = get_smth_from_file(filename);
                     }
-                    free(choice);
+                    free(selected);
                 }
                 printf("Введите ключ: \n");
                 char* key = readline("");
                 printf("Введите информацию: \n");
-                char* inf = readline("");
-                if(ptable == NULL){
+                char* info = readline("");
+                if(newtable == NULL){
                     printf("Таблица не создана.\n");
                 }else{
-                    int f = push(key, inf, ptable);
-                    if(f == -2){
+                    int d = push(key, info, newtable);
+                    if(d == -2){
                         printf("Таблица переполнена.\n");
                     }
                 }
-                free(inf);
+                free(info);
                 free(key);
                 break;
             case 2:
-                if(ptable == NULL){
-                    printf("Вы не ввели таблицу. Введите таблицу.\n");
+                if(newtable == NULL){
+                    printf("Вы не ввели таблицу.\n");
                     break;
                 }
-                printf("Введите ключ для поиска\n");
+                printf("Введите ключ для поиска: \n");
                 key = readline("");
-                Table_old* min_table = find(ptable, key);
-                if(min_table->csize2 > 0){
+                old_Table* min_table = find(newtable, key);
+                if(min_table->old_size2b > 0){
                     show_oldtable(min_table);
                 }else{
                     printf("Элемент не найден.\n");
@@ -85,24 +85,24 @@ int main(){
                 min_table = clean_oldtable(min_table);
                 break;
             case 3:
-                if(ptable == NULL){
-                    printf("Вы не ввели таблицу. Введите таблицу.\n");
+                if(newtable == NULL){
+                    printf("Вы не ввели таблицу.\n");
                     break;
                 }
-                printf("Введите ключ для удаления\n");
+                printf("Введите ключ для удаления: \n");
                 key = readline("");
-                int f = remove_key(ptable, key);
-                if(f){
-                    printf("Элемент в таблице не найден\n");
+                int d = remove_key(newtable, key);
+                if(d){
+                    printf("Элемент не найден.\n");
                 }
                 free(key);
                 break;
             case 4:
-                if(ptable == NULL){
-                    printf("Введите таблицу.\n");
+                if(newtable == NULL){
+                    printf("Вы не ввели таблицу.\n");
                     break;
                 }else{
-                    show_smth_from_file(ptable);
+                    show_smth_from_file(newtable);
                 }
                 break;
             default:
