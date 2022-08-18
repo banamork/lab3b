@@ -221,6 +221,9 @@ Table_old* search(Table* ptable, char* key){
             fread(&key_l, sizeof(int), 1, ptable->file);
             char* key_f = (char*)calloc(key_l + 1, sizeof(char));
             fread(key_f, sizeof(char), key_l, ptable->file);
+            fread(&inf_l, sizeof(int), 1, ptable->file);
+            char* inf_f = (char*)calloc(inf_l + 1, sizeof(char));
+            fread(inf_f, sizeof(char), inf_l, ptable->file);
             if(strcmp(key_f, key) == 0){
                 min_table->ks[i].busy = 1;
                 fread(&key_l, sizeof(int), 1, ptable->file);
@@ -230,7 +233,7 @@ Table_old* search(Table* ptable, char* key){
                 fread(&inf_l, sizeof(int), 1, ptable->file);
                 min_table->ks[i].info = (char*)calloc(inf_l + 1, sizeof(char));
                 fread(min_table->ks[i].info, sizeof(char), inf_l, ptable->file);
-                
+                strcpy(min_table->ks[i].info, inf_f);
             }
             num++;
             free(key_f);
