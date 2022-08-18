@@ -129,7 +129,7 @@ Table* create_table(int size, char* filename){
     return newtable;
 }
 
-Table* get_smth_from_file(char* filename){
+Table* bookmark_to_file(char* filename){
     Table* newtable = (Table*)calloc(1, sizeof(Table));
     newtable->filename = (char*)calloc(strlen(filename) + 1, sizeof(char));
     strcpy(newtable->filename, filename);
@@ -181,6 +181,8 @@ int push(char* key, char* info, Table* newtable){
         char* key_f = (char*)calloc(key_l + 1, sizeof(char));
         fread(key_f, sizeof(char), key_l, newtable->file);
         if(strcmp(key_f, key) == 0){
+            printf("Ключ уже существует.\n")
+            ;return -1;
         }
         i++;
         free(key_f);
@@ -315,7 +317,7 @@ old_Table* clean_oldtable(old_Table* newtable){
     return newtable;
 }
 
-void show_smth_from_file(Table* newtable){
+void viewer_to_file(Table* newtable){
     printf("   i    |   key   |   info   \n");
     int i = 0;
     int num = 0;

@@ -19,7 +19,7 @@ int main(){
         int size = if_stupid(s);
         newtable = create_table(size, filename);
     }else{
-        newtable = get_smth_from_file(filename);
+        newtable = bookmark_to_file(filename);
     }
     free(selected);
 
@@ -49,7 +49,7 @@ int main(){
                         int size = if_stupid(s);
                         newtable = create_table(size, filename);
                     }else{
-                        newtable = get_smth_from_file(filename);
+                        newtable = bookmark_to_file(filename);
                     }
                     free(selected);
                 }
@@ -102,7 +102,7 @@ int main(){
                     printf("Вы не ввели таблицу.\n");
                     break;
                 }else{
-                    show_smth_from_file(newtable);
+                    viewer_to_file(newtable);
                 }
                 break;
             default:

@@ -33,7 +33,7 @@ char* verify_name_of_file(char* filename);
 char* verify_selected(char* selected);
 
 Table* create_table(int size, char* filename);
-Table* get_smth_from_file(char* filename);
+Table* bookmark_to_file(char* filename);
 
 
 int push(char* key, char* info, Table* newtable);
@@ -41,7 +41,7 @@ void show_oldtable(old_Table* newtable);
 old_Table* find(Table* newtable, char* key);
 int remove_key(Table* newtable, char* key);
 old_Table* clean_oldtable(old_Table* newtable);
-void show_smth_from_file(Table* newtable);
+void viewer_to_file(Table* newtable);
 Table* clean_table(Table* newtable);
 
 #endif //__FUNCT__
