@@ -237,6 +237,7 @@ Table_old* search(Table* ptable, char* key){
             }
             num++;
             free(key_f);
+            free(inf_f);
         }
         i++;
         key_l = 0;
